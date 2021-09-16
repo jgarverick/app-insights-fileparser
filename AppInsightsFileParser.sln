@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31612.314
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppInsightsFileParser", "AppInsightsFileParser\AppInsightsFileParser.csproj", "{03F5CB86-3747-441B-8573-D0E6A534C452}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{03F5CB86-3747-441B-8573-D0E6A534C452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03F5CB86-3747-441B-8573-D0E6A534C452}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03F5CB86-3747-441B-8573-D0E6A534C452}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03F5CB86-3747-441B-8573-D0E6A534C452}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8CEEE3E9-8054-42A6-A36C-29CFF6182FE1}
+	EndGlobalSection
+EndGlobal
