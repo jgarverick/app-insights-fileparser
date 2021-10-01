@@ -33,8 +33,10 @@ namespace AppInsightsFileParser.FileSystem
             if (!File.Exists($"{logDirectory}\\logcounts.json"))
             {
                 File.Create($"{logDirectory}\\logcounts.json");
+            } else {
+                _logCounts = JsonConvert.DeserializeObject<Dictionary<string, long>>(File.ReadAllText($"{logDirectory}\\logcounts.json"));
             }
-            _logCounts = JsonConvert.DeserializeObject<Dictionary<string, long>>(File.ReadAllText($"{logDirectory}\\logcounts.json"));
+            
             
         }
 
