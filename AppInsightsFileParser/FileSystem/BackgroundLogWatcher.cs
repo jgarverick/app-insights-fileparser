@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace AppInsightsFileParser.FileSystem
 {
@@ -29,7 +30,11 @@ namespace AppInsightsFileParser.FileSystem
             appInsightsKey = Environment.GetEnvironmentVariable("APPINSIGHTS_INSTRUMENTATIONKEY");
             if (logDirectory == string.Empty) throw new InvalidOperationException("Path cannot be determined.");
             if (appInsightsKey == string.Empty) throw new InvalidOperationException("App Insights Key must be present to use this service.");
-
+            if (!File.Exists($"{logDirectory}\\logcounts.json"))
+            {
+                File.Create($"{logDirectory}\\logcounts.json");
+            }
+            _logCounts = JsonConvert.DeserializeObject<Dictionary<string, long>>(File.ReadAllText($"{logDirectory}\\logcounts.json"));
             
         }
 
@@ -102,7 +107,7 @@ namespace AppInsightsFileParser.FileSystem
                 lineCount++;
             }
             _logCounts[fileName] = lineCount;
-            
+            JsonConvert.SerializeObject(_logCounts);
         }
         private async Task LogTelemetry(string line)
         {
