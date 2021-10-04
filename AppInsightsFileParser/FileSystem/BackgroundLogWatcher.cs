@@ -34,10 +34,20 @@ namespace AppInsightsFileParser.FileSystem
             {
                 File.Create($"{logDirectory}\\logcounts.json");
             } else {
-                _logCounts = JsonConvert.DeserializeObject<Dictionary<string, long>>(File.ReadAllText($"{logDirectory}\\logcounts.json"));
+                var fileContents = File.ReadAllText($"{logDirectory}\\logcounts.json");
+                if (String.IsNullOrEmpty(fileContents))
+                {
+                    fileContents = JsonConvert.SerializeObject(_logCounts);
+                }
+                _logCounts = JsonConvert.DeserializeObject<Dictionary<string, long>>(fileContents);
             }
             
             
+        }
+
+        ~BackgroundLogWatcher()
+        {
+            File.WriteAllLinesAsync($"{logDirectory}\\logcounts.json", new List<String>() { JsonConvert.SerializeObject(_logCounts) });
         }
 
         private void OnFileDeleted(object sender, FileSystemEventArgs e)
@@ -88,6 +98,12 @@ namespace AppInsightsFileParser.FileSystem
                    _watcher.Created += OnFileCreated;
                    _watcher.Deleted += OnFileDeleted;
                    IsOperational = true;
+
+                   var files = Directory.GetFiles(logDirectory, filter);
+                   foreach(var file in files)
+                   {
+                       OnFileChanged(this, new FileSystemEventArgs(WatcherChangeTypes.Changed, logDirectory, Path.GetFileName(file)));
+                   }
                });
             }
         }
@@ -109,7 +125,7 @@ namespace AppInsightsFileParser.FileSystem
                 lineCount++;
             }
             _logCounts[fileName] = lineCount;
-            JsonConvert.SerializeObject(_logCounts);
+            await File.WriteAllLinesAsync ($"{logDirectory}\\logcounts.json", new List<String>() { JsonConvert.SerializeObject(_logCounts) });
         }
         private async Task LogTelemetry(string line)
         {
